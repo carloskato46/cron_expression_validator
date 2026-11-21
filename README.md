@@ -26,3 +26,10 @@ Most cron libraries parse an expression and then compute the next fire time.  Th
 ## Awkward edge
 
 The day-of-week field accepts both `0` and `7` for Sunday.  If you are comparing expressions textually, `0` and `7` will not compare equal even though they mean the same day.  Normalise before comparing if that matters to you.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
